@@ -1,0 +1,66 @@
+﻿
+@model EditRoleViewModel
+
+@{
+    ViewData["Title"] = "Edit Role";
+}
+
+<form method="post" class="mb-3">
+
+    <hr />
+
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="text-danger mb-3">
+            <strong>Please correct the following errors : </strong>
+            <div asp-validation-summary="All"></div>
+        </div>
+        <hr />
+    }
+
+    <div class="mb-3">
+        <label asp-for="Id" class="form-label"></label>
+        <input asp-for="Id" class="form-control" disabled />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="roleName" class="form-label"></label>
+        <input asp-for="roleName" class="form-control" placeholder="Role Name" />
+        <span asp-validation-for="roleName" class="text-danger"></span>
+    </div>
+    <hr />
+    <div class="mb-3">
+        <a asp-controller="Administration" asp-action="ListOfRoles" class="btn btn-primary me-2">Back</a>
+        <button type="submit" class="btn btn-primary">Update Role</button>
+    </div>
+    <hr />
+    <div class="col-12">
+        <div class="card mb-4">
+
+            <div class="card-header">
+                <h3>User in this role</h3>
+            </div>
+
+            <div class="card-body">
+                <div class="row mb-2">
+                    @if (Model.users.Any())
+                    {
+                        foreach(var user in Model.users)
+                        {
+                            <h5 class="card-title">@user</h5>
+                        }
+                    }
+                    else
+                    {
+                        <h5 class="card-title">None at this moment</h5>
+                    }                    
+                </div>
+            </div>
+
+            <div class="card-footer text-start">
+                <a asp-controller="Administration" asp-action="EditUsersInRole" asp-route-roleId="@Model.Id" class="btn btn-primary me-2">Add or Remove Users</a>
+            </div>
+
+        </div>
+    </div>
+</form>

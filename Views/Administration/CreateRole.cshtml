@@ -1,0 +1,31 @@
+﻿
+@model CreateRoleViewModel
+
+@{
+    ViewData["Title"] = "Create New Role";
+}
+
+<form method="post" class="mb-3">
+
+    <hr />
+
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="text-danger mb-3">
+            <strong>Please correct the following errors : </strong>
+            <div asp-validation-summary="All"></div>
+        </div>
+        <hr />
+    }
+
+    <div class="mb-3">
+        <label asp-for="roleName" class="form-label"></label>
+        <input asp-for="roleName" class="form-control" placeholder="Role Name" />
+        <span asp-validation-for="roleName" class="text-danger"></span>
+    </div>
+    <hr />
+    <div class="mb-3">
+        <a asp-controller="home" asp-action="index" class="btn btn-primary me-2">Back</a>
+        <button type="submit" class="btn btn-primary">Create Role</button>
+    </div>
+</form>

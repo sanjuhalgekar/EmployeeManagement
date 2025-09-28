@@ -1,0 +1,54 @@
+﻿
+@model IEnumerable<Employee>
+
+@{
+    ViewBag.Title = "All Employee Details";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        @foreach (var emp in Model)
+        {
+            string gender = emp.Gender == Gender.Male ? "Sample-Male.jpg" : "Sample-Female.jpg";
+            string imageFile = string.IsNullOrEmpty(emp.PhotoPath) ? gender : emp.PhotoPath;
+            var imagePath = Url.Content("~/images/" + imageFile);
+
+            <div class="col-md-4">
+                <div class="card mb-4">
+
+                    <div class="card-header">
+                        <h3>@emp.Name</h3> 
+                    </div>
+
+                    <img class="card-img-top" src="@imagePath" alt="Employee" style="height: 500px; object-fit: cover;" asp-append-version="true" />
+                    
+                    <div class="card-body">
+                        <div class="row mb-2">
+                            <div class="col-5 text-end fw-bold">Employee Id:</div>
+                            <div class="col-7">@emp.Id</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-5 text-end fw-bold">Email Id:</div>
+                            <div class="col-7">@emp.Email</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-5 text-end fw-bold">Department:</div>
+                            <div class="col-7">@emp.Department</div>
+                        </div>
+                    </div>
+
+                    <div class="card-footer text-center">
+                        <a asp-controller="home" asp-action="EmployeeDetailsById" asp-route-id="@emp.encryptedId" class="btn btn-primary me-2">View</a>
+                        @if (User.IsInRole("Admin") || User.IsInRole("Super Admin"))
+                        {
+                            <a asp-controller="home" asp-action="Edit" asp-route-id="@emp.Id" class="btn btn-primary me-2">Edit</a>
+                            <a asp-controller="home" asp-action="Delete" asp-route-id="@emp.Id" class="btn btn-danger">Delete</a>
+                        }                        
+                    </div>
+
+                </div>
+                <hr />
+            </div>           
+        }
+    </div>
+</div>

@@ -1,0 +1,99 @@
+﻿
+@inject SignInManager<IdentityUser> signInManager;
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation-unobtrusive@4.0.0/dist/jquery.validate.unobtrusive.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <!-- Correctly linked Bootstrap CSS using Razor syntax -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap JS Bundle (includes Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- JQuery CDN Link -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <!--Set Timer For logout-->
+    
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-3">
+        <div class="container-fluid">
+            @if (signInManager.IsSignedIn(User))
+            {
+                <a class="navbar-brand" asp-controller="home" asp-action="index">
+                    <img src="~/images/Logo.png" height="30" width="30" />
+                </a>
+            }
+            else
+            {
+                <a class="navbar-brand" asp-controller="Account" asp-action="Login">
+                    <img src="~/images/Logo.png" height="30" width="30" />
+                </a>
+            }            
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    @if (signInManager.IsSignedIn(User))
+                    {
+                        @if (User.IsInRole("Admin") || User.IsInRole("Super Admin"))
+                        {
+                            <li class="nav-item">
+                                <a asp-controller="home" asp-action="create" class="nav-link" aria-current="page">Create</a>
+                            </li>
+                        }                        
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Manage
+                            </a>
+                            <ul class="dropdown-menu">
+                                @if (User.IsInRole("Admin") || User.IsInRole("Super Admin"))
+                                {
+                                    <li><a class="dropdown-item" asp-controller="Administration" asp-action="ListOfUsers">Users</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Administration" asp-action="ListOfRoles">Roles</a></li>
+                                }
+                                <li><a class="dropdown-item" asp-controller="Account" asp-action="ChangePassword">Password</a></li>
+                            </ul>
+                        </li>
+                    }                   
+                </ul>
+
+                <div class="d-flex">
+                    <ul class="navbar-nav">
+                        @if (signInManager.IsSignedIn(User))
+                        {
+                            <li class="nav-item">
+
+                                <form method="post" asp-controller="account"  asp-action="logout">
+                                    <button type="submit" class="nav-link btn btn-link py-0" style="width:auto">
+                                        Logout @User.Identity.Name
+                                    </button>
+                                </form>
+
+                            </li>
+                        }
+                    </ul>
+                </div>
+
+            </div>
+        </div>            
+    </nav>
+    <div class="container">
+        <div class="mb-3">
+            <h1>@ViewBag.Title</h1>
+        </div>
+        @RenderBody()
+    </div>
+</body>
+</html>

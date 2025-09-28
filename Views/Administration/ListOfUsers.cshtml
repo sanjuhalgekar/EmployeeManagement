@@ -1,0 +1,51 @@
+﻿
+@model IEnumerable<IdentityUser>
+
+@{
+    ViewData["Title"] = "All User";
+}
+
+<div class="container mt-4">
+    @if (Model.Any())
+    {
+        <div class="mb-4">
+            <a asp-controller="Account" asp-action="Register" class="btn btn-primary me-2">Add User</a>
+        </div> 
+
+        <div class="row">
+            @foreach (var user in Model)
+            {
+                <div class="col-12">
+                    <div class="card mb-4">
+
+                        <div class="card-header">
+                            <h3>User Id: @user.Id</h3>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="row mb-2 align-items-start text-start">
+                                <div class="fw-bold">UserName:</div>
+                                <div class="text-start">@user.Email</div>
+                            </div>
+                        </div>
+
+                        <div class="card-footer text-start">
+                            <form method="post">
+                                <a asp-controller="Administration" asp-action="EditUser" asp-route-userId="@user.Id" class="btn btn-primary me-2">Edit</a>
+                                <a asp-controller="Administration" asp-action="DeleteUser" asp-route-userId="@user.Id" class="btn btn-danger" onclick="return confirm('Are you sure want to delete this user : @user.Email')">Delete</a>
+                            </form>
+                        </div>
+
+                    </div>
+                    <hr />
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div>
+            <h3>Currently no user, To add new user click on below link</h3>
+        </div>
+    }
+</div>

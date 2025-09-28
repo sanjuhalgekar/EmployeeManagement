@@ -1,0 +1,28 @@
+﻿
+@model HomeDetailsViewModel
+
+@{
+    ViewBag.Title = "Employee Details";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h3>@Model.employee.Name</h3>
+                </div>
+                <img class="card-img-top" src="@Url.Content("~/images/Sample.jpg")" alt="Employee" />
+                <div class="card-body">
+                    <h6>Email Id : </h6>@Model.employee.Email
+                    <h6>Department : </h6>@Model.employee.Department
+                </div>
+                <div class="card-footer text-center">
+                    <a href="#" class="btn btn-primary me-2">View</a>
+                    <a href="#" class="btn btn-success me-2">Edit</a>
+                    <a href="#" class="btn btn-danger">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

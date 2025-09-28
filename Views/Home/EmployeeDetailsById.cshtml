@@ -1,0 +1,57 @@
+﻿
+@model HomeDetailsViewModel
+
+@{
+    ViewBag.Title = "Employee Details";
+
+    string gender = Model.employee.Gender == Gender.Male ? "Sample-Male.jpg" : "Sample-Female.jpg";
+
+    string imageFile = string.IsNullOrEmpty(Model.employee.PhotoPath) ? gender : Model.employee.PhotoPath;
+    var imagePath = Url.Content("~/images/" + imageFile);
+}
+
+<div class="d-flex justify-content-center align-items-center flex-column mt-5 mb-5">
+
+    <div class="row">
+
+        <div class="col-md-4">
+
+            <div class="card mb-4" style="width: 60rem;">
+
+                <div class="card-header">
+                    <h3>@Model.employee.Name</h3>
+                </div>
+
+                <img class="card-img-top" src="@imagePath" alt="Employee" style="height: fit-content; object-fit: cover;" asp-append-version="true" />
+
+                <div class="card-body">
+                    <div class="row mb-2">
+                        <div class="col-5 text-end fw-bold">Employee Id:</div>
+                        <div class="col-7">@Model.employee.Id</div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-5 text-end fw-bold">Email Id:</div>
+                        <div class="col-7">@Model.employee.Email</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5 text-end fw-bold">Department:</div>
+                        <div class="col-7">@Model.employee.Department</div>
+                    </div>
+                </div>
+
+                <div class="card-footer text-center">      
+                    <a asp-controller="home" asp-action="index" class="btn btn-primary me-2">Back</a>
+                    @if (User.IsInRole("Admin") || User.IsInRole("Super Admin"))
+                    {
+                        <a asp-controller="home" asp-action="edit" asp-route-id="@Model.employee.Id" class="btn btn-primary me-2">Edit</a>
+                        <a asp-controller="home" asp-action="Delete" asp-route-id="@Model.employee.Id" class="btn btn-danger">Delete</a>
+                    }                   
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

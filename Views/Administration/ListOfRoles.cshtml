@@ -1,0 +1,80 @@
+﻿@model IEnumerable<IdentityRole>
+
+@{
+    ViewData["Title"] = "All Roles";
+}
+
+<div class="container">
+    @if (Model.Any())
+    {
+        <div class="mb-4">
+            @if ((await authorizationService.AuthorizeAsync(User, "EditRolePolicy")).Succeeded)
+            {
+                <a asp-controller="Administration" asp-action="CreateRole" class="btn btn-primary me-2">Create Role</a>
+            }            
+        </div>        
+
+        <div class="row">
+            @foreach (var role in Model)
+            {
+                <div class="col-12">
+                    <div class="card mb-4">
+
+                        <div class="card-header">
+                            <h3>Role Id: @role.Id</h3>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="row mb-2 align-items-start text-start">
+                                <div class="fw-bold">Role Name:</div>
+                                <div class="text-start">@role.Name</div>
+                            </div>
+                        </div>
+
+                        <div class="card-footer text-start">
+                            <form method="post">
+                                @if ((await authorizationService.AuthorizeAsync(User, "EditRolePolicy")).Succeeded)
+                                {
+                                    <a asp-controller="Administration" asp-action="EditRole" asp-route-id="@role.Id" class="btn btn-primary me-2">Edit</a>
+                                }
+
+                                @if ((await authorizationService.AuthorizeAsync(User, "DeleteRolePolicy")).Succeeded)
+                                {
+                                    <a asp-controller="Administration" asp-action="DeleteRole" asp-route-roleId="@role.Id" class="btn btn-danger" onclick="return confirm('Are you sure want to delete this role : @role.Name')">Delete</a>
+                                }
+                            </form>
+                        </div>
+
+                    </div>
+                    <hr />
+                </div>
+
+            }
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card mb-4">
+
+                    <div class="card-header">
+                        <h3>No roles created yet</h3>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="row mb-2">
+                            Use below link to create role
+                        </div>
+                    </div>
+
+                    <div class="card-footer text-center">
+                        <a asp-controller="Administration" asp-action="CreateRole" class="btn btn-primary me-2">Create Role</a>
+                    </div>
+
+                </div>
+                <hr />
+            </div>
+        </div>
+    }
+</div>
